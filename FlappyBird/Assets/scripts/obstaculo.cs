@@ -9,13 +9,30 @@ public class Obstaculo : MonoBehaviour
 
     [SerializeField]
     private float variacaoY;
+
+    private Vector3 posicaoPassaro;
+
+    private bool pontuei;
+
+    private UIScript scriptDaUI;
     private void Awake()
     {
         this.transform.Translate(Vector3.up * Random.Range(-variacaoY, variacaoY));
     }
+    private void Start()
+    {
+        this.posicaoPassaro = GameObject.FindObjectOfType<bird>().transform.position;
+        this.scriptDaUI = GameObject.FindObjectOfType<UIScript>();
+    }
 
     void Update()
     {
+        if(!this.pontuei && this.transform.position.x < posicaoPassaro.x)
+        {
+            Debug.Log("Pontuou");
+            this.pontuei = true;
+            this.scriptDaUI.adicionarPontos();
+        }
         this.transform.Translate(Vector3.left * velocidade * Time.deltaTime);
     }
 
